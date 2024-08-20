@@ -5,7 +5,6 @@ import org.e7.clinica.model.Domicilio;
 import org.e7.clinica.model.Paciente;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
