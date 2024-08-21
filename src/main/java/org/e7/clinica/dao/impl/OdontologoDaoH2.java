@@ -1,6 +1,7 @@
 package org.e7.clinica.dao.impl;
 
 import org.e7.clinica.db.H2Connection;
+import org.e7.clinica.dao.IDaoOdontologo;
 import org.e7.clinica.model.Odontologo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class OdontologoDaoH2 implements org.e7.clinica.dao.IDaoOdontologo<Odontologo> {
+public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
     private static final Logger logger = LoggerFactory.getLogger(OdontologoDaoH2.class);
     private static final String INSERT = "INSERT INTO ODONTOLOGOS VALUES (DEFAULT,?,?,?)";
     private static String SELECT_ALL = "select * from ODONTOLOGOS";
+    private static String UPDATE = "UPDATE ODONTOLOGOS SET MATRICULA=?, NOMBRE=?, APELLIDO=? WHERE ID= ?";
+    private static String DELETE = "DELETE FROM ODONTOLOGOS WHERE ID=?";
 
 
     @Override
@@ -97,5 +100,52 @@ public class OdontologoDaoH2 implements org.e7.clinica.dao.IDaoOdontologo<Odonto
             }
         }
         return odontologos;
+    }
+
+    @Override
+    public void modificar(Odontologo odontologo) {
+        Connection connection = null;
+        try {
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setString(1, odontologo.getNombre());
+            preparedStatement.setString(2, odontologo.getApellido());
+            preparedStatement.setString(3, odontologo.getMatricula());
+            preparedStatement.setInt(4, odontologo.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+
+            logger.info("Odontologo con id: " + odontologo.getId() + "Actualizado");
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage());
+                e.printStackTrace();
+            } finally {
+                try {
+                    connection.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    logger.error(ex.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void eliminar(Odontologo odontologo) {
+
     }
 }

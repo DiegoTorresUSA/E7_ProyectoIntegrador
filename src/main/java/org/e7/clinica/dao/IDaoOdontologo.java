@@ -7,4 +7,8 @@ public interface IDaoOdontologo<T>{
 
     List<T> listarOdontologos();
 
+    void modificar(T t);
+
+    void eliminar(T t);
+
 }
