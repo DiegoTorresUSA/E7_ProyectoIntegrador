@@ -47,5 +47,5 @@ class PacienteServiceTest {
         // entonces
         assertEquals(id, paciente.getId());
     }
-
+//hacer test para modificar y eliminar
 }

@@ -14,6 +14,7 @@ public class H2Connection {
         return DriverManager.getConnection("jdbc:h2:./clinica","sa","sa");
     }
 
+    //metodo para crear tabla antes de que se ejecute la app llamada desde clinicaAplication
     public static void crearTablas(){
         Connection connection = null;
         try {

@@ -2,12 +2,15 @@ package org.e7.clinica.dao.impl;
 
 import org.e7.clinica.db.H2Connection;
 import org.e7.clinica.dao.IDaoOdontologo;
+import org.e7.clinica.model.Domicilio;
 import org.e7.clinica.model.Odontologo;
+import org.e7.clinica.model.Paciente;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import java.util.List;
 public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
     private static final Logger logger = LoggerFactory.getLogger(OdontologoDaoH2.class);
     private static final String INSERT = "INSERT INTO ODONTOLOGOS VALUES (DEFAULT,?,?,?)";
+    public static final String SELECT_ID ="SELECT * FROM PACIENTES WHERE ID = ?";
     private static String SELECT_ALL = "select * from ODONTOLOGOS";
     private static String UPDATE = "UPDATE ODONTOLOGOS SET MATRICULA=?, NOMBRE=?, APELLIDO=? WHERE ID= ?";
     private static String DELETE = "DELETE FROM ODONTOLOGOS WHERE ID=?";
@@ -70,6 +74,39 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
         return odontologoARetornar;
     }
 
+    @Override
+    public Odontologo buscarPorId(Integer id) {
+        Connection connection = null;
+        Odontologo odontologoEncontrado = null;
+        try{
+            connection = H2Connection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                Integer Id = resultSet.getInt(1);
+                String matriculaOdontologo = resultSet.getString(2);
+                String nombreOdontologo = resultSet.getString(3);
+                String apellidoOdontologo = resultSet.getString(4);
+                odontologoEncontrado = new Odontologo(Id, matriculaOdontologo, nombreOdontologo, apellidoOdontologo);
+            }
+            if(odontologoEncontrado != null){
+                logger.info("odontologo encontrado "+ odontologoEncontrado);
+            }else logger.info("odontologo no encontrado");
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return odontologoEncontrado;
+    }
     @Override
     public List<Odontologo> listarOdontologos() {
         Connection connection = null;
@@ -145,7 +182,43 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
     }
 
     @Override
-    public void eliminar(Odontologo odontologo) {
+    public void eliminar(Integer id) {
+        Connection connection = null;
+        Odontologo odontologo = buscarPorId(id);
+        try{
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+            if (odontologo != null) {
+                PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
+                preparedStatement.setInt(1, id);
+                preparedStatement.executeUpdate();
+                connection.commit();
+            }
+            logger.info("odontologo con id "+id+ " eliminado con exito" );
 
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage());
+                e.printStackTrace();
+            } finally {
+                try {
+                    connection.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    logger.error(ex.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 }
