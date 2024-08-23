@@ -1,12 +1,10 @@
 package org.e7.clinica.dao.impl;
-
 import org.e7.clinica.db.H2Connection;
 import org.e7.clinica.dao.IDaoOdontologo;
 import org.e7.clinica.model.Odontologo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +16,7 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
     private static String SELECT_ALL = "select * from ODONTOLOGOS";
     private static String UPDATE = "UPDATE ODONTOLOGOS SET MATRICULA=?, NOMBRE=?, APELLIDO=? WHERE ID= ?";
     private static String DELETE = "DELETE FROM ODONTOLOGOS WHERE ID=?";
+    private static String SELECT_ID = "select * from ODONTOLOGOS where ID = ?";
 
 
     @Override
@@ -42,8 +41,7 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
                 odontologoARetornar = new Odontologo(Id, odontologo.getMatricula(), odontologo.getNombre(), odontologo.getApellido());
             }
             logger.info("Información obtenida" + odontologoARetornar);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             e.printStackTrace();
             try {
@@ -71,6 +69,42 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
     }
 
     @Override
+    public Odontologo buscarPorId(Integer id) {
+        Connection connection = null;
+        Odontologo odontologoEncontrado = null;
+
+        try {
+            connection = H2Connection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ID);
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet= preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                Integer IdDB = resultSet.getInt(1);
+                String matricula = resultSet.getString(2);
+                String nombre = resultSet.getString(3);
+                String apellido = resultSet.getString(4);
+                odontologoEncontrado = new Odontologo(IdDB, matricula, nombre, apellido);
+                logger.info("Odontologo Encontrado" + odontologoEncontrado);
+            }
+            if (odontologoEncontrado != null){
+                logger.info("Odontologo Encontrado" + odontologoEncontrado);
+            }else logger.info("Odontologo no Encontrado");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return odontologoEncontrado;
+    }
+
+    @Override
     public List<Odontologo> listarOdontologos() {
         Connection connection = null;
         Odontologo consultaOdontologo = null;
@@ -87,7 +121,7 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
                 String apellidoOdontologo = resultSet.getString(4);
                 consultaOdontologo = new Odontologo(Id, matriculaOdontologo, nombreOdontologo, apellidoOdontologo);
                 odontologos.add(consultaOdontologo);
-                //logger.info(productos);
+                logger.info("Información de odontologos" + odontologos);
             }
 
         } catch (Exception e) {
@@ -118,7 +152,7 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
             connection.commit();
 
             logger.info("Odontologo con id: " + odontologo.getId() + "Actualizado");
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             e.printStackTrace();
             try {
@@ -146,6 +180,43 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
 
     @Override
     public void eliminar(Odontologo odontologo) {
+        Connection connection = null;
+        //Odontologo odontologo =
+        try {
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
+            preparedStatement.setInt(1, odontologo.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage());
+                e.printStackTrace();
+            } finally {
+                try {
+                    connection.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    logger.error(ex.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
 
     }
 }
+

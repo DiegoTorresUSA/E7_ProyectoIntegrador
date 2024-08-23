@@ -2,7 +2,6 @@ package org.e7.clinica.controller;
 
 import org.e7.clinica.model.Odontologo;
 import org.e7.clinica.service.OdontologoService;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +27,21 @@ public class OdontologoController {
         List<Odontologo> odontologos = odontologoService.listarOdontologo();
         model.addAttribute("odontologos", odontologos);
         return "odontologo";
+    }
+
+    @GetMapping("/listarOdontologos")
+    public List<Odontologo> listarOdontologos(){
+        return odontologoService.listarOdontologo();
+    }
+
+    @GetMapping("/buscar/{id}")
+    public Odontologo buscarPorId(@PathVariable Integer id){
+        return odontologoService.buscarporId(id);
+    }
+
+    @PutMapping("/modificar")
+    public String modificarOdontologo(@RequestBody Odontologo odontologo){
+        odontologoService.modificarOdontologo(odontologo);
+        return "El odontologo con id: " + odontologo.getId() + " fue actualizado";
     }
 }

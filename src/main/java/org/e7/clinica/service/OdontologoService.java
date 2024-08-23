@@ -21,4 +21,12 @@ public class OdontologoService {
     public List<Odontologo> listarOdontologo() {
         return odontologoIDaoOdontologo.listarOdontologos();
     }
+
+    public Odontologo buscarporId(Integer id){
+        return odontologoIDaoOdontologo.buscarPorId(id);
+    }
+
+    public void modificarOdontologo(Odontologo odontologo){
+        odontologoIDaoOdontologo.modificar(odontologo);
+    }
 }

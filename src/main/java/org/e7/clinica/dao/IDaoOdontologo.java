@@ -5,6 +5,8 @@ import java.util.List;
 public interface IDaoOdontologo<T>{
     T guardar(T t);
 
+    T buscarPorId(Integer id);
+
     List<T> listarOdontologos();
 
     void modificar(T t);
