@@ -11,6 +11,6 @@ public interface IDaoOdontologo<T>{
 
     void modificar(T t);
 
-    void eliminar(T t);
+    void eliminar(Integer id);
 
 }

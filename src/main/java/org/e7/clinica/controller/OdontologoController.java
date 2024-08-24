@@ -44,4 +44,10 @@ public class OdontologoController {
         odontologoService.modificarOdontologo(odontologo);
         return "El odontologo con id: " + odontologo.getId() + " fue actualizado";
     }
+
+    @DeleteMapping("/eliminar/{id}")
+    public String eliminarOdontologo(@PathVariable Integer id){
+        odontologoService.eliminarOdontologo(id);
+        return "El odontologo con id: " + id+ " fue Eliminado";
+    }
 }

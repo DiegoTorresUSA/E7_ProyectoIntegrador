@@ -179,19 +179,22 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
     }
 
     @Override
-    public void eliminar(Odontologo odontologo) {
+    public void eliminar(Integer id) {
         Connection connection = null;
-        //Odontologo odontologo =
+        Odontologo odontologoEncontrado = buscarPorId(id);
         try {
             connection = H2Connection.getConnection();
             connection.setAutoCommit(false);
 
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
-            preparedStatement.setInt(1, odontologo.getId());
-            preparedStatement.executeUpdate();
-            connection.commit();
-
-
+            if (odontologoEncontrado != null){
+                PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
+                preparedStatement.setInt(1, odontologoEncontrado.getId());
+                preparedStatement.executeUpdate();
+                connection.commit();
+                logger.info("Odontologo con id "+id+ " eliminado " );
+            }else {
+                logger.info("Odontologo no encontrado");
+            }
         }catch (Exception e){
             logger.error(e.getMessage());
             e.printStackTrace();
@@ -216,7 +219,6 @@ public class OdontologoDaoH2 implements IDaoOdontologo<Odontologo> {
                 e.printStackTrace();
             }
         }
-
     }
 }
 

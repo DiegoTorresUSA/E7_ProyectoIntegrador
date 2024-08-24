@@ -29,4 +29,8 @@ public class OdontologoService {
     public void modificarOdontologo(Odontologo odontologo){
         odontologoIDaoOdontologo.modificar(odontologo);
     }
+
+    public void eliminarOdontologo(Integer id){
+        odontologoIDaoOdontologo.eliminar(id);
+    }
 }
