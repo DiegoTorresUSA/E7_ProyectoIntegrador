@@ -27,6 +27,9 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
+    public Paciente() {
+    }
+
     public Integer getId() {
         return id;
     }

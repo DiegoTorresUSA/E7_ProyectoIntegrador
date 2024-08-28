@@ -2,12 +2,13 @@ package org.e7.clinica.controller;
 
 import org.e7.clinica.model.Paciente;
 import org.e7.clinica.service.PacienteService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("/paciente")
 public class PacienteController {
     //Se instacia como atributo, porque necesitamos acceder a sus metodos
     private PacienteService pacienteService;
@@ -23,4 +24,10 @@ public class PacienteController {
         model.addAttribute("apellidoPaciente", paciente.getApellido());
         return "paciente";
     }
+
+    @PostMapping("/guardar")
+    public ResponseEntity<Paciente> guardarPaciente(@RequestBody Paciente paciente){
+        return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
+    }
+
 }
