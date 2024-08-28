@@ -19,7 +19,7 @@ public class OdontologoService {
     }
 
     public List<Odontologo> listarOdontologo() {
-        return odontologoIDaoOdontologo.listarOdontologos();
+        return odontologoIDaoOdontologo.listar();
     }
 
     public Odontologo buscarporId(Integer id){

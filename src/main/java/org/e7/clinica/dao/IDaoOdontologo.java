@@ -7,7 +7,7 @@ public interface IDaoOdontologo<T>{
 
     T buscarPorId(Integer id);
 
-    List<T> listarOdontologos();
+    List<T> listar();
 
     void modificar(T t);
 
