@@ -2,8 +2,8 @@ package org.e7.clinica.controller;
 
 import org.e7.clinica.model.Paciente;
 import org.e7.clinica.service.PacienteService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +18,19 @@ public class PacienteController {
         this.pacienteService = pacienteService;
     }
     @PostMapping("/guardar")
-    public Paciente guardarPaciente(@RequestBody Paciente paciente){
-        return pacienteService.guardarPaciente(paciente);
+    public ResponseEntity<Paciente>  guardarPaciente(@RequestBody Paciente paciente){
+        return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
     }
     @GetMapping("/buscar/{id}")
-    public Paciente buscarPorId(@PathVariable Integer id){
-        return pacienteService.buscarPorId(id);
+    public ResponseEntity<?>  buscarPorId(@PathVariable Integer id){
+        Paciente paciente = pacienteService.buscarPorId(id);
+        if(paciente != null){
+            return ResponseEntity.ok(paciente);
+        } else {
+            // ResponseEntity.status(HttpStatus.NOT_FOUND).body("paciente no encontrado");
+            //ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
+        }
     }
 
     @GetMapping("/buscartodos")
