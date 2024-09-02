@@ -1,36 +1,43 @@
 package org.e7.clinica.service;
 
-import org.e7.clinica.dao.IDaoOdontologo;
-import org.e7.clinica.dao.impl.OdontologoDaoH2;
-import org.e7.clinica.model.Odontologo;
-import org.e7.clinica.model.Paciente;
+import org.e7.clinica.entity.Odontologo;
 import org.springframework.stereotype.Service;
+import repository.IOdontologoRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class OdontologoService {
-    private IDaoOdontologo<Odontologo> odontologoIDaoOdontologo;
+public class OdontologoService implements IOdontologoService{
+    private IOdontologoRepository odontologoRepository;
 
-    public OdontologoService(IDaoOdontologo<Odontologo> odontologoIDaoOdontologo) {
-        this.odontologoIDaoOdontologo = odontologoIDaoOdontologo;
+    public OdontologoService(IOdontologoRepository odontologoRepository) {
+        this.odontologoRepository = odontologoRepository;
     }
+
+    @Override
     public Odontologo guardarOdontologo(Odontologo odontologo) {
-        return odontologoIDaoOdontologo.guardar(odontologo);
+        return odontologoRepository.save(odontologo);
     }
 
-    public  Odontologo  buscarPorId(Integer id){
-        return odontologoIDaoOdontologo.buscarPorId(id);
+    @Override
+    public Optional<Odontologo> buscarPorId(Integer id) {
+        return odontologoRepository.findById(id);
     }
 
-    public List<Odontologo> listarOdontologo() {
-        return odontologoIDaoOdontologo.listarOdontologos();
+    @Override
+    public List<Odontologo> buscarTodos() {
+        return odontologoRepository.findAll();
     }
-    public void modificarOdontologo(Odontologo odontologo){
-        odontologoIDaoOdontologo.modificar(odontologo);
+
+    @Override
+    public void modificarOdontologo(Odontologo odontologo) {
+        odontologoRepository.save(odontologo);
     }
-    public void eliminarOdontologoe(Integer id){
-        odontologoIDaoOdontologo.eliminar(id);
+
+    @Override
+    public void eliminarOdontologo(Integer id) {
+        odontologoRepository.deleteById(id);
     }
 }
 

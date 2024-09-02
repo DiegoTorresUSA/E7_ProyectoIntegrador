@@ -1,13 +1,15 @@
 package org.e7.clinica.controller;
 
-import org.e7.clinica.model.Odontologo;
-import org.e7.clinica.model.Paciente;
+import org.e7.clinica.entity.Odontologo;
+import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.service.OdontologoService;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/odontologo")
@@ -20,25 +22,44 @@ public class OdontologoController {
     }
 
     @PostMapping("/guardar")
-    public Odontologo guardarOdontologo(@RequestBody Odontologo odontologo){
-        return odontologoService.guardarOdontologo(odontologo);
+    public ResponseEntity<Odontologo>  guardarOdontologo(@RequestBody Odontologo odontologo){
+       return ResponseEntity.ok(odontologoService.guardarOdontologo(odontologo));
     }
 
-    @GetMapping("/odontologo")  // -> listar odontologos? ?????
-    public String mostrarOdontologo(Model model) {
-        List<Odontologo> odontologos = odontologoService.listarOdontologo();
-        model.addAttribute("odontologos", odontologos);
-        return "odontologo";
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable Integer id){
+        Optional <Odontologo>odontologo = odontologoService.buscarPorId(id);
+        if (odontologo.isPresent()){
+            return ResponseEntity.ok(odontologo.get());
+        }else {
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
+        }
     }
+    @GetMapping("/buscartodos")
+    public ResponseEntity <List<Odontologo> >buscarTodos(){
+        return  ResponseEntity.ok(odontologoService.buscarTodos());
+    }
+
     @PutMapping("/modificar")
-    public String modificarOdontologo(@RequestBody Odontologo odontologo){
-        odontologoService.modificarOdontologo(odontologo);
-        return "el odontologo  fue modificado";
+    public ResponseEntity<?> modificarOdontologo(@RequestBody Odontologo odontologo){
+       Optional< Odontologo> odontologoEncontrado = odontologoService.buscarPorId(odontologo.getId());
+        if (odontologoEncontrado.isPresent()){
+            odontologoService.modificarOdontologo(odontologoEncontrado.get());
+            String jsonResponse = "{\"mensaje\": \"El paciente fue modificado\"}";
+            return ResponseEntity.ok(jsonResponse);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
-
     @DeleteMapping("/eliminar/{id}")
-    public String eliminarOdontologo(@PathVariable Integer id) {
-        odontologoService.eliminarOdontologoe(id);
-        return "el paciente fue eliminado";
+    public ResponseEntity<?> eliminarOdontologo(@PathVariable Integer id){
+        Optional<Odontologo> odontologoEncontrado = odontologoService.buscarPorId(id);
+        if (odontologoEncontrado.isPresent()){
+            odontologoService.eliminarOdontologo(id);
+            String jsonResponse = "{\"mensaje\": \"El paciente fue Eliminado\"}";
+            return ResponseEntity.ok(jsonResponse);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

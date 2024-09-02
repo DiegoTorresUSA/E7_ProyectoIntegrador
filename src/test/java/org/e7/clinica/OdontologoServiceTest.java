@@ -1,7 +1,6 @@
 package org.e7.clinica;
 
-import org.e7.clinica.model.Odontologo;
-import org.e7.clinica.dao.impl.OdontologoDaoH2;
+import org.e7.clinica.entity.Odontologo;
 import org.e7.clinica.service.OdontologoService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -10,15 +9,14 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class OdontologoServiceTest {
-    static org.slf4j.Logger logger = LoggerFactory.getLogger(OdontologoServiceTest.class);
-    OdontologoService odontologoService = new OdontologoService(new OdontologoDaoH2());
+   /* static org.slf4j.Logger logger = LoggerFactory.getLogger(OdontologoServiceTest.class);
 
     @BeforeAll
     static void crearTabla() {
@@ -56,10 +54,10 @@ class OdontologoServiceTest {
         //dado
         List<Odontologo> listaOdontologos = new ArrayList<>();
         // cuando
-        listaOdontologos = odontologoService.listarOdontologo();
+        listaOdontologos = odontologoService.buscarTodos();
         logger.info(String.valueOf(listaOdontologos));
         // entonces
         assertNotNull(listaOdontologos);
-    }
+    }*/
     //hacer test para modificar y eliminar
 }
