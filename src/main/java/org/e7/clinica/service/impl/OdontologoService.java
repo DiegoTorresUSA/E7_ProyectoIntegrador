@@ -12,6 +12,8 @@ public class OdontologoService implements IOdontologoService{
     private IOdontologoRepository odontologoRepository;
 
     public OdontologoService(IOdontologoRepository odontologoRepository) {
+
+
         this.odontologoRepository = odontologoRepository;
     }
 

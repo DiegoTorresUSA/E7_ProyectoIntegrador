@@ -46,12 +46,13 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public void modificarTurno(Turno turno) {
+        //Armo el turno
         Optional<Paciente> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
         Optional<Odontologo> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
         if (paciente.isPresent() && odontologo.isPresent()) {
             turno.setPaciente(paciente.get());
             turno.setOdontologo(odontologo.get());
-            // Persistir el turno
+            // Persistir el turno, el setteo de la fecha viene en turno
             turnoRepository.save(turno);
         }
     }
