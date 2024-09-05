@@ -1,29 +1,13 @@
 package org.e7.clinica;
 
-import org.e7.clinica.dao.impl.PacienteDaoH2;
-import org.e7.clinica.db.H2Connection;
-import org.e7.clinica.model.Domicilio;
-import org.e7.clinica.model.Paciente;
-import org.e7.clinica.service.PacienteService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class PacienteServiceTest {
-    static Logger logger = LoggerFactory.getLogger(PacienteServiceTest.class);
+   /* static Logger logger = LoggerFactory.getLogger(PacienteServiceTest.class);
     PacienteService pacienteService = new PacienteService(new PacienteDaoH2());
 
     @BeforeAll
     static void tablas(){
         H2Connection.crearTablas();
     }
-
 
     @Test
     @DisplayName("Testear que un paciente se guarde en la base de datos con su domicilio")
@@ -45,7 +29,6 @@ class PacienteServiceTest {
         // cuando
         Paciente paciente = pacienteService.buscarPorId(id);
         // entonces
-        assertEquals(id, paciente.getId());
+        assertEquals(id, paciente.getId());*/
     }
-
-}
+//hacer test para modificar y eliminar

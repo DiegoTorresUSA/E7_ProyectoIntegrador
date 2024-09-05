@@ -1,14 +1,13 @@
 package org.e7.clinica.controller;
 
-import org.e7.clinica.model.Paciente;
-import org.e7.clinica.service.PacienteService;
+import org.e7.clinica.entity.Paciente;
+import org.e7.clinica.service.impl.PacienteService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/paciente")
@@ -19,41 +18,32 @@ public class PacienteController {
     public PacienteController(PacienteService pacienteService) {
         this.pacienteService = pacienteService;
     }
-
-    @GetMapping("/index")
-    public String mostrarPacientePorId(Model model, @RequestParam Integer id) {
-        Paciente paciente = pacienteService.buscarPorId(id);
-        model.addAttribute("nombrePaciente", paciente.getNombre());
-        model.addAttribute("apellidoPaciente", paciente.getApellido());
-        return "paciente";
-    }
-
     @PostMapping("/guardar")
-    public ResponseEntity<Paciente> guardarPaciente(@RequestBody Paciente paciente){
+    public ResponseEntity<Paciente>  guardarPaciente(@RequestBody Paciente paciente){
         return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
     }
-
-    @GetMapping("/listarPacientes")
-    public ResponseEntity<List<Paciente>> listarPacientes() {
-        return ResponseEntity.ok(pacienteService.buscarTodos());
-    }
-
     @GetMapping("/buscar/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Integer id){
-        Paciente paciente = pacienteService.buscarPorId(id);
-        if(paciente != null){
-            return ResponseEntity.ok(paciente);
+    public ResponseEntity<?>  buscarPorId(@PathVariable Integer id){
+        Optional <Paciente> paciente = pacienteService.buscarPorId(id);
+        if(paciente.isPresent()){
+            return ResponseEntity.ok(paciente.get());
         } else {
             // ResponseEntity.status(HttpStatus.NOT_FOUND).body("paciente no encontrado");
             //ResponseEntity.notFound().build();
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
     }
+
+    @GetMapping("/buscartodos")
+    public ResponseEntity <List<Paciente> >buscarTodos(){
+        return  ResponseEntity.ok(pacienteService.buscarTodos());
+    }
+
     @PutMapping("/modificar")
     public ResponseEntity<?> modificarPaciente(@RequestBody Paciente paciente){
-        Paciente pacienteEncontrado = pacienteService.buscarPorId(paciente.getId());
-        if(pacienteEncontrado!= null){
-            pacienteService.modificarPaciente(paciente);
+        Optional <Paciente> pacienteEncontrado = pacienteService.buscarPorId(paciente.getId());
+        if(pacienteEncontrado.isPresent()){
+            pacienteService.modificarPaciente(pacienteEncontrado.get());
             String jsonResponse = "{\"mensaje\": \"El paciente fue modificado\"}";
             return ResponseEntity.ok(jsonResponse);
         } else {
@@ -63,13 +53,24 @@ public class PacienteController {
 
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarPaciente(@PathVariable Integer id){
-        Paciente pacienteEncontrado = pacienteService.buscarPorId(id);
-        if(pacienteEncontrado!= null){
+        Optional <Paciente> pacienteEncontrado = pacienteService.buscarPorId(id);
+        if(pacienteEncontrado.isPresent()){
             pacienteService.eliminarPaciente(id);
             String jsonResponse = "{\"mensaje\": \"El paciente fue modificado\"}";
             return ResponseEntity.ok(jsonResponse);
         } else {
             return ResponseEntity.notFound().build();
         }
+    }/*
+    @GetMapping("/buscarApellidoNombre")
+    public ResponseEntity<List<Paciente>> buscarApellidoYNombre(@RequestParam String apellido,
+                                                                @RequestParam String nombre){
+        return ResponseEntity.ok(pacienteService.buscarPorApellidoyNombre(apellido, nombre));
     }
+
+    @GetMapping("/buscarNombre/{nombre}")
+    public ResponseEntity<List<Paciente>> buscarNombreLike(@PathVariable String nombre){
+        return ResponseEntity.ok(pacienteService.buscarLikeNombre(nombre));
+    }*/
+
 }
