@@ -1,4 +1,4 @@
-package repository;
+package org.e7.clinica.repository;
 
 import org.e7.clinica.entity.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;

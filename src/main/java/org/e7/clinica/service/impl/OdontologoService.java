@@ -3,7 +3,7 @@ package org.e7.clinica.service.impl;
 import org.e7.clinica.entity.Odontologo;
 import org.e7.clinica.service.IOdontologoService;
 import org.springframework.stereotype.Service;
-import repository.IOdontologoRepository;
+import org.e7.clinica.repository.IOdontologoRepository;
 
 
 import java.util.List;
