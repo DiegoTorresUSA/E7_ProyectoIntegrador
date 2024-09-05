@@ -41,6 +41,23 @@ public class OdontologoService implements IOdontologoService {
     public void eliminarOdontologo(Integer id) {
         iOdontologoRepository.deleteById(id);
     }
+
+    @Override
+    public List<Odontologo> buscarPorApellidoyNombre(String apellido, String nombre) {
+        return iOdontologoRepository.findByApellidoAndNombre(apellido, nombre);
+    }
+
+    @Override
+    public List<Odontologo> buscarPorNombreOderByMatricula(String nombre) {
+        return iOdontologoRepository.findByNombreOrderByMatricula(nombre);
+    }
+
+    @Override
+    public Long contarOdontologos() {
+        return iOdontologoRepository.contarOdontologos();
+    }
+
+
 }
 
 
