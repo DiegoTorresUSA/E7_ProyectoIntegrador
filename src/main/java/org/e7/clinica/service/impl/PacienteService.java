@@ -3,7 +3,7 @@ package org.e7.clinica.service.impl;
 import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.service.IPacienteService;
 import org.springframework.stereotype.Service;
-import repository.IPacienteRepository;
+import org.e7.clinica.repository.IPacienteRepository;
 
 import java.util.List;
 import java.util.Optional;

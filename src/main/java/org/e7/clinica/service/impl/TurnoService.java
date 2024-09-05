@@ -5,7 +5,7 @@ import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.entity.Turno;
 import org.e7.clinica.service.ITurnoService;
 import org.springframework.stereotype.Service;
-import repository.ITurnoRepository;
+import org.e7.clinica.repository.ITurnoRepository;
 
 import java.util.List;
 import java.util.Optional;
