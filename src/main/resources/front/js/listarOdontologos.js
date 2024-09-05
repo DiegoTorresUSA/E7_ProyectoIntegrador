@@ -10,7 +10,7 @@ let currentOdonotologoId;
 // Función para obtener y mostrar los odontólogos
 function fetchOdontologos() {
   // listar los odontologos
-  fetch(`${apiURL}/odontologo/listarOdontologos`)
+  fetch(`${apiURL}/odontologo/buscartodos`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
