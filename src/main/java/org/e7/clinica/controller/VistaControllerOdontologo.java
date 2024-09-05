@@ -1,7 +1,7 @@
 package org.e7.clinica.controller;
 
 import org.e7.clinica.entity.Odontologo;
-import org.e7.clinica.service.OdontologoService;
+import org.e7.clinica.service.impl.OdontologoService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

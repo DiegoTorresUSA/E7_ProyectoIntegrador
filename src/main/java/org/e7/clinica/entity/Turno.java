@@ -15,10 +15,17 @@ import java.time.LocalDate;
 
 public class Turno {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)// id autoincremental si la base de datos lo genera
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// id autoincremental
     private Integer id;
+
+    @ManyToOne
+    //@JsonBackReference(value = "paciente-turno")
     private Paciente paciente;
+
+    @ManyToOne// no se aconseja usar cascade en  ManyToOne
+    //@JsonBackReference(value = "odontologo-turno")
     private Odontologo odontologo;
+
     private LocalDate fecha;
     @Override
     public String toString() {

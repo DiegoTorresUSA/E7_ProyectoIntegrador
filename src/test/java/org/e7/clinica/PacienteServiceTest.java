@@ -1,16 +1,5 @@
 package org.e7.clinica;
 
-import org.e7.clinica.entity.Domicilio;
-import org.e7.clinica.entity.Paciente;
-import org.e7.clinica.service.PacienteService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.time.LocalDate;
-import static org.junit.jupiter.api.Assertions.*;
-
 class PacienteServiceTest {
    /* static Logger logger = LoggerFactory.getLogger(PacienteServiceTest.class);
     PacienteService pacienteService = new PacienteService(new PacienteDaoH2());

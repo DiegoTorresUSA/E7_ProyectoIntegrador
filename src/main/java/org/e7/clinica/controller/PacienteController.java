@@ -1,7 +1,7 @@
 package org.e7.clinica.controller;
 
 import org.e7.clinica.entity.Paciente;
-import org.e7.clinica.service.PacienteService;
+import org.e7.clinica.service.impl.PacienteService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

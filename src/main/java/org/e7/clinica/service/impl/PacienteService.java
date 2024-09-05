@@ -1,6 +1,7 @@
-package org.e7.clinica.service;
+package org.e7.clinica.service.impl;
 
 import org.e7.clinica.entity.Paciente;
+import org.e7.clinica.service.IPacienteService;
 import org.springframework.stereotype.Service;
 import repository.IPacienteRepository;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 
 @Service
-public class PacienteService implements IPacienteService  {
+public class PacienteService implements IPacienteService {
     private IPacienteRepository pacienteRepository;
     public PacienteService(IPacienteRepository pacienteRepository) {
         this.pacienteRepository = pacienteRepository;

@@ -1,18 +1,5 @@
 package org.e7.clinica;
 
-import org.e7.clinica.entity.Odontologo;
-import org.e7.clinica.service.OdontologoService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class OdontologoServiceTest {
