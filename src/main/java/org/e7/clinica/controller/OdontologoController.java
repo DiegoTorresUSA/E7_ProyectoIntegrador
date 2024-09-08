@@ -38,11 +38,11 @@ public class OdontologoController {
         return  ResponseEntity.ok(odontologoService.buscarTodos());
     }
 
-    @PutMapping("/modificar")
+    @PutMapping("/modificar/")
     public ResponseEntity<?> modificarOdontologo(@RequestBody Odontologo odontologo){
        Optional< Odontologo> odontologoEncontrado = odontologoService.buscarPorId(odontologo.getId());
         if (odontologoEncontrado.isPresent()){
-            odontologoService.modificarOdontologo(odontologoEncontrado.get());
+            odontologoService.modificarOdontologo(odontologo);
             String jsonResponse = "{\"mensaje\": \"El odontologo fue modificado\"}";
             return ResponseEntity.ok(jsonResponse);
         }else {

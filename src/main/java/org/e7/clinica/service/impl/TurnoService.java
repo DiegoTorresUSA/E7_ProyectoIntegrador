@@ -3,6 +3,7 @@ package org.e7.clinica.service.impl;
 import org.e7.clinica.entity.Odontologo;
 import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.entity.Turno;
+import org.e7.clinica.exception.ResourceNotFoundException;
 import org.e7.clinica.service.ITurnoService;
 import org.springframework.stereotype.Service;
 import org.e7.clinica.repository.ITurnoRepository;
@@ -23,9 +24,9 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public Turno guardarTurno(Turno turno){
+    public Turno guardarTurno(Turno turno) {
         Optional<Paciente> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
-        Optional<Odontologo>  odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
+        Optional<Odontologo> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
         Turno turnoARetornar = null;
         if (paciente.isPresent() && odontologo.isPresent()) {
             turno.setPaciente(paciente.get());
@@ -35,6 +36,7 @@ public class TurnoService implements ITurnoService {
         }
         return turnoARetornar;
     }
+
     @Override
     public Optional<Turno> buscarporId(Integer id) {
         return turnoRepository.findById(id);
@@ -57,8 +59,14 @@ public class TurnoService implements ITurnoService {
             turnoRepository.save(turno);
         }
     }
+
     @Override
     public void eliminarTurno(Integer id) {
-        turnoRepository.deleteById(id);
+        Optional<Turno> turno = turnoRepository.findById(id);
+        if (turno.isPresent()) {
+            turnoRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("El turno  con ID" + id + " no fue encontrado");
+        }
     }
 }

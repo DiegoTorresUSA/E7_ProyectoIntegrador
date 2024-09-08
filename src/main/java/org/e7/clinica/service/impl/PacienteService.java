@@ -1,7 +1,9 @@
 package org.e7.clinica.service.impl;
 
 import org.e7.clinica.entity.Paciente;
+import org.e7.clinica.exception.ResourceNotFoundException;
 import org.e7.clinica.service.IPacienteService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.e7.clinica.repository.IPacienteRepository;
 
@@ -21,22 +23,42 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public Optional<Paciente>  buscarPorId(Integer id) {
-        return pacienteRepository.findById(id);
+    public Optional<Paciente> buscarPorId(Integer id) {
+        Optional<Paciente> paciente = pacienteRepository.findById(id);
+        if (paciente.isPresent()) {
+            return paciente;//Repository.findById(id);
+        } else {
+            throw new ResourceNotFoundException("El paciente con ID  " + id + "  no fue encontrado");
+        }
     }
 
     @Override
     public List<Paciente> buscarTodos() {
+        List<Paciente> pacientes=pacienteRepository.findAll();
+        if(pacientes.isEmpty()){
+            throw new ResourceNotFoundException("No se encontraron pacientes");
+        }
         return pacienteRepository.findAll();
     }
 
     @Override
-    public void modificarPaciente(Paciente paciente) {pacienteRepository.save(paciente);
+    public void modificarPaciente(Paciente paciente) {
+        Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(paciente.getId());
+        if(pacienteEncontrado.isPresent()){
+            pacienteRepository.save(paciente);
+        } else {
+            throw new ResourceNotFoundException("El paciente  no fue encontrado");
+        }
     }
 
     @Override
     public void eliminarPaciente(Integer id) {
-        pacienteRepository.deleteById(id);
+        Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
+        if(pacienteEncontrado.isPresent()){
+            pacienteRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("El paciente  con ID "+ id +" no fue encontrado");
+        }
     }
 
     /*@Override

@@ -48,26 +48,22 @@ public class TurnoController {
         return  ResponseEntity.ok(turnoService.buscarTodos());
     }
 
- /*   @PutMapping("/modificar")
-    public ResponseEntity<?> modificarPaciente(@RequestBody Turno turno){
-        Optional <Turno>  turnoGenerado= turnoService.buscarporId(turno.getId()));
+ @PutMapping("/modificar")
+    public ResponseEntity<?> modificarTurno(@RequestBody Turno turno){
+        Optional <Turno>  turnoGenerado= turnoService.buscarporId(turno.getId());
         if(turnoGenerado.isPresent()){
-            turnoService.modificarTurno(turnoGenerado.get());
+            turnoService.modificarTurno(turno);
             String jsonResponse = "{\"mensaje\": \"El turno fue modificado\"}";
             return ResponseEntity.ok(jsonResponse);
         } else {
             return ResponseEntity.notFound().build();
         }
-    }*/
+    }
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<?> eliminarTurno(@PathVariable Integer id){
-        Optional <Turno> turnoEncontrado = turnoService.buscarporId(id);
-        if(turnoEncontrado.isPresent()){
-            turnoService.eliminarTurno(id);
-            String jsonResponse = "{\"mensaje\": \"El turno fue eliminado\"}";
-            return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-}}
-// hacer todos los metodos
+    public ResponseEntity<?> eliminarTurno(@PathVariable Integer id) {
+        turnoService.eliminarTurno(id);
+        return ResponseEntity.ok("{\"mensaje\": \"El turno fue eliminado\"}");
+    }
+
+}
+
