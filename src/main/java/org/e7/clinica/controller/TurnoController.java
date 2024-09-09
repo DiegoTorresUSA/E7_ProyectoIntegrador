@@ -23,24 +23,12 @@ public class TurnoController {
 
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarTurno(@RequestBody Turno turno){
-        Turno turnoAGuardar = turnoService.guardarTurno(turno);
-
-        if (turnoAGuardar != null){
-            return ResponseEntity.ok(turnoAGuardar);
-        }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El paciente o el odontologo no fueron encontrados");
-        }
+        return ResponseEntity.ok(turnoService.guardarTurno(turno)) ;
     }
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?>  buscarPorId(@PathVariable Integer id){
-        Optional<Turno> turno = turnoService.buscarporId(id);
-        if(turno.isPresent()){
-            return ResponseEntity.ok(turno.get());
-        } else {
-            // ResponseEntity.status(HttpStatus.NOT_FOUND).body("paciente no encontrado");
-            //ResponseEntity.notFound().build();
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
-        }
+        turnoService.buscarporId(id);
+        return ResponseEntity.ok(turnoService.buscarporId(id));
     }
 
     @GetMapping("/buscartodos")
@@ -50,14 +38,8 @@ public class TurnoController {
 
  @PutMapping("/modificar")
     public ResponseEntity<?> modificarTurno(@RequestBody Turno turno){
-        Optional <Turno>  turnoGenerado= turnoService.buscarporId(turno.getId());
-        if(turnoGenerado.isPresent()){
             turnoService.modificarTurno(turno);
-            String jsonResponse = "{\"mensaje\": \"El turno fue modificado\"}";
-            return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+            return ResponseEntity.ok("{\"mensaje\": \"El turno fue modificado\"}") ;
     }
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarTurno(@PathVariable Integer id) {
