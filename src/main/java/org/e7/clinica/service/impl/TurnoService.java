@@ -5,7 +5,6 @@ import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.entity.Turno;
 import org.e7.clinica.exception.ResourceNotFoundException;
 import org.e7.clinica.service.ITurnoService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.e7.clinica.repository.ITurnoRepository;
 
