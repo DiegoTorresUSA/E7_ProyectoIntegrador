@@ -1,7 +1,7 @@
 package org.e7.clinica;
 
 import org.e7.clinica.entity.Odontologo;
-import org.e7.clinica.entity.Paciente;
+import org.e7.clinica.exception.ResourceNotFoundException;
 import org.e7.clinica.service.impl.OdontologoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
@@ -24,7 +23,7 @@ class OdontologoServiceTest {
     @Autowired
     OdontologoService odontologoService;
     Odontologo odontologo;
-    Odontologo odontologo1;
+    /*Odontologo odontologo1;*/
     Odontologo odontologoDesdeDB;
 
     @BeforeEach
@@ -35,11 +34,12 @@ class OdontologoServiceTest {
         odontologo.setMatricula("3");
         odontologoDesdeDB = odontologoService.guardarOdontologo(odontologo);
 
-        odontologo1 = new Odontologo();
+        /*odontologo1 = new Odontologo();
         odontologo1.setNombre("Diego");
         odontologo1.setApellido("Torres");
         odontologo1.setMatricula("4");
         odontologoDesdeDB = odontologoService.guardarOdontologo(odontologo1);
+        System.out.println(odontologoDesdeDB);*/
     }
 
     @Test
@@ -49,7 +49,7 @@ class OdontologoServiceTest {
         //cuando
         //Entonces
         assertNotNull(odontologoDesdeDB.getMatricula());
-
+        System.out.println("test insert caso1" + odontologoDesdeDB);
     }
 
     @Test
@@ -61,7 +61,7 @@ class OdontologoServiceTest {
         listaOdontologos = odontologoService.buscarTodos();
         // entonces
         assertNotNull(listaOdontologos);
-        System.out.println(listaOdontologos);
+        System.out.println("test consulta caso 2" + listaOdontologos);
     }
     //hacer test para modificar y eliminar
 
@@ -74,17 +74,28 @@ class OdontologoServiceTest {
         odontologoDesdeDB = odontologoService.buscarPorId(id).get();
         // entonces
         assertEquals(id, odontologoDesdeDB.getId());
+        System.out.println("test consulta caso 3" + odontologoDesdeDB);
     }
 
-    /*@Test
+    @Test
     @DisplayName("Testing para eliminar un odontologo en BD")
     void testDelete(){
         //dado
-        Integer id = 2;
+        Odontologo odontologoAEliminar = new Odontologo();
+        odontologoAEliminar.setNombre("Juan");
+        odontologoAEliminar.setApellido("Perez");
+        odontologoAEliminar.setMatricula("5");
+
+        Odontologo odontologoGuardado = odontologoService.guardarOdontologo(odontologoAEliminar);
+
+        System.out.println("odontologoGuardado" + odontologoGuardado);
+
+        Integer id = odontologoGuardado.getId();
         // cuando
-        odontologoDesdeDB = odontologoService.buscarPorId(id).get();
         odontologoService.eliminarOdontologo(id);
         // entonces
-        assertEquals(id.);
-    }*/
+        assertThrows(ResourceNotFoundException.class, () -> {
+            odontologoService.buscarPorId(id);
+        }, "Se esperaba una ResourceNotFoundException cuando se busca un odontólogo eliminado");
+    }
 }
