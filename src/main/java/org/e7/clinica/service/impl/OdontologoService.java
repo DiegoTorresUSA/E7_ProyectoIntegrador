@@ -6,7 +6,6 @@ import org.e7.clinica.service.IOdontologoService;
 import org.springframework.stereotype.Service;
 import org.e7.clinica.repository.IOdontologoRepository;
 
-
 import java.util.List;
 import java.util.Optional;
 

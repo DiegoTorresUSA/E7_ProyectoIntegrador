@@ -18,6 +18,11 @@ public class GlobalHandler {
     public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    public class BadRequestException extends RuntimeException {
+        public BadRequestException(String message) {
+            super(message);
+        }
+    }
 
     //Excepcion para manejo de todas las otras excepciones
     @ExceptionHandler(Exception.class)
