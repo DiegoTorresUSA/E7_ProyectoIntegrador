@@ -24,8 +24,8 @@ public class OdontologoService implements IOdontologoService {
 
     @Override
     public Odontologo guardarOdontologo(Odontologo odontologo) {
-    if (odontologo.getNombre() == null || odontologo.getApellido()== null) {
-            logger.error("El nombre o apellido del odontólogo es nulo. Revisa los datos e intenta nuevamente.");
+    if (odontologo.getNombre() == null || odontologo.getApellido()== null || odontologo.getMatricula()== null) {
+            logger.error("El nombre, apellido y matricula son obligatorios. Revisa los datos e intenta nuevamente.");
             throw new BadRequestException("El nombre y apellido del odontólogo son obligatorios");
     }
         return iOdontologoRepository.save(odontologo);

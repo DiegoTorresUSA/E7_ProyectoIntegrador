@@ -1,5 +1,6 @@
 package org.e7.clinica.service.impl;
 
+import org.e7.clinica.exception.BadRequestException;
 import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.exception.ResourceNotFoundException;
 import org.e7.clinica.service.IPacienteService;
@@ -21,9 +22,11 @@ public class PacienteService implements IPacienteService {
     }
     @Override
     public Paciente guardarPaciente(Paciente paciente) {
-        Paciente paciente1 = pacienteRepository.save(paciente);
-        logger.info("paciente1 "+paciente1.getId() +  " guardado");
-        return paciente1;
+        if (paciente.getNombre()== null || paciente.getApellido()== null  || paciente.getDni()== null || paciente.getFechaIngreso()== null ||paciente.getDomicilio()== null ){
+            logger.error("Los datos nombre, apellido, DNI, domicilio y fecha de ingreso son obligatorios");
+            throw new BadRequestException("Los datos nombre, apellido,DNI, domicilio y fecha de ingreso son obligatorios");
+        }
+        return pacienteRepository.save(paciente);
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.e7.clinica.entity.Odontologo;
 import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.entity.Turno;
 import org.e7.clinica.exception.ResourceNotFoundException;
+import org.e7.clinica.exception.BadRequestException;
 import org.e7.clinica.service.ITurnoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class TurnoService implements ITurnoService {
     public Turno guardarTurno(Turno turno) {
         Turno turnoDesdeDb = null;
         if (turno.getPaciente() ==  null || turno.getOdontologo() == null){
-            throw new IllegalArgumentException("El odontologo o Paciente no puede ser  un valor nulo");
+            throw new BadRequestException("El odontologo o Paciente no pueden ser  un valor nulo");
         }
         Optional<Paciente> paciente = pacienteService.buscarPorId(turno.getPaciente().getId());
         Optional<Odontologo> odontologo = odontologoService.buscarPorId(turno.getOdontologo().getId());
