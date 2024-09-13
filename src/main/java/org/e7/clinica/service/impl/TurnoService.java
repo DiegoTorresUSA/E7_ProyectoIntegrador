@@ -5,6 +5,8 @@ import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.entity.Turno;
 import org.e7.clinica.exception.ResourceNotFoundException;
 import org.e7.clinica.service.ITurnoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.e7.clinica.repository.ITurnoRepository;
 
@@ -14,6 +16,8 @@ import java.util.Optional;
 
 @Service
 public class TurnoService implements ITurnoService {
+    private final Logger logger = LoggerFactory.getLogger(TurnoService.class);
+
     private ITurnoRepository turnoRepository;
     private PacienteService pacienteService;
     private OdontologoService odontologoService;
@@ -26,6 +30,7 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public Turno guardarTurno(Turno turno) {
+        Turno turnoDesdeDb = null;
         if (turno.getPaciente() ==  null || turno.getOdontologo() == null){
             throw new IllegalArgumentException("El odontologo o Paciente no puede ser  un valor nulo");
         }
@@ -35,7 +40,9 @@ public class TurnoService implements ITurnoService {
         if (paciente.isPresent() && odontologo.isPresent()) {
             turno.setPaciente(paciente.get());
             turno.setOdontologo(odontologo.get());
-            return turnoRepository.save(turno);
+            turnoDesdeDb = turnoRepository.save(turno);
+            logger.info("turno "+turnoDesdeDb.getId() +  " guardado");
+            return turnoDesdeDb;
         } else {
             throw new ResourceNotFoundException("El Paciente o el Odontologo no fueron encontrados");
         }
@@ -45,15 +52,19 @@ public class TurnoService implements ITurnoService {
     public Optional<Turno> buscarporId(Integer id) {
         Optional<Turno> turno = turnoRepository.findById(id);
             if(turno.isPresent()){
+                logger.info("turno encontrado: "+ turno.get());
                 return turno;
             } else {
+                logger.error("El turno con ID  " + id + "  no fue encontrado");
                 throw new ResourceNotFoundException("El turno con ID  " + id + "  no fue encontrado");
             }
     }
 
     @Override
     public List<Turno> buscarTodos() {
-        return turnoRepository.findAll();
+        List<Turno> turnos = turnoRepository.findAll();
+        logger.info("turnos encontrados: "+ turnos);
+        return turnos;
     }
 
     @Override
@@ -66,26 +77,22 @@ public class TurnoService implements ITurnoService {
             turno.setOdontologo(odontologo.get());
             // Persistir el turno, el setteo de la fecha viene en turno
             turnoRepository.save(turno);
+            logger.info("turno "+turno.getId() +  " modificado");
         } else {
+            logger.error("El turno con ID  " + turno.getId() + "  no fue encontrado");
             throw new ResourceNotFoundException("El turno  no fue encontrado");
         }
     }
 
-  /*  Optional <Turno>  turnoGenerado= turnoService.buscarporId(turno.getId());
-        if(turnoGenerado.isPresent()){
-        turnoService.modificarTurno(turno);
-        String jsonResponse = "{\"mensaje\": \"El turno fue modificado\"}";
-        return ResponseEntity.ok(jsonResponse);
-    } else {
-        return ResponseEntity.notFound().build();
-    }*/
     @Override
     public void eliminarTurno(Integer id) {
         Optional<Turno> turno = turnoRepository.findById(id);
         if (turno.isPresent()) {
             turnoRepository.deleteById(id);
+            logger.info("turno "+turno.get() + " eliminado");
         } else {
-            throw new ResourceNotFoundException("El turno  con ID" + id + " no fue encontrado");
+            logger.error("El turno  con ID" + id + " no fue encontrado");
+            throw new ResourceNotFoundException("El turno  con ID " + id + " no fue encontrado");
         }
     }
 }

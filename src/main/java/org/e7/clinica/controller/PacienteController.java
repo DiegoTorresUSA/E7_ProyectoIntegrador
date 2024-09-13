@@ -4,7 +4,6 @@ import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.service.impl.PacienteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
