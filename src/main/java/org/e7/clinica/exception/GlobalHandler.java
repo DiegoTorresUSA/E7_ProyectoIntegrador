@@ -1,27 +1,28 @@
 package org.e7.clinica.exception;
 
-
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-
 public class GlobalHandler {
-    //Excepcion personalizada
+
+    //Manejar excepciones de recurso no encontrado
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> manejarExcepcionesRecursoNoEncontrado(ResourceNotFoundException e){
+    public ResponseEntity<String> manejarExcepcionesRecursoNoEncontrado(ResourceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
-    /*@ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }*/
-
-    //Excepcion para manejo de todas las otras excepciones
+    // Manejar excepciones de BadRequest
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<String> manejarBadRequestException(BadRequestException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+    //  Manejar excepciones generales
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> manejarTodasLasExcepciones(Exception e){
+    public ResponseEntity<String> manejarTodasLasExcepciones(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

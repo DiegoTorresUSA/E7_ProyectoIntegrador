@@ -1,5 +1,6 @@
 package org.e7.clinica.service.impl;
 
+import org.e7.clinica.exception.BadRequestException;
 import org.e7.clinica.entity.Odontologo;
 import org.e7.clinica.exception.ResourceNotFoundException;
 import org.e7.clinica.service.IOdontologoService;
@@ -23,9 +24,11 @@ public class OdontologoService implements IOdontologoService {
 
     @Override
     public Odontologo guardarOdontologo(Odontologo odontologo) {
-        Odontologo odontologo1 = iOdontologoRepository.save(odontologo);
-        logger.info("Odontologo "+odontologo1.getId() +  " guardado");
-        return odontologo1;
+    if (odontologo.getNombre() == null || odontologo.getApellido()== null) {
+            logger.error("El nombre o apellido del odontólogo es nulo. Revisa los datos e intenta nuevamente.");
+            throw new BadRequestException("El nombre y apellido del odontólogo son obligatorios");
+    }
+        return iOdontologoRepository.save(odontologo);
     }
 
     @Override
@@ -59,7 +62,7 @@ public class OdontologoService implements IOdontologoService {
             logger.info("Odontólogo encontrado, actualizando: " + odontologo.getId());
             iOdontologoRepository.save(odontologo);
         } else {
-            System.out.println("Odontólogo no encontrado con ID: " + odontologo.getId());
+            logger.error("Odontólogo no encontrado con ID: " + odontologo.getId());
             throw new ResourceNotFoundException("El odontologo  no fue encontrado");
         }
     }
