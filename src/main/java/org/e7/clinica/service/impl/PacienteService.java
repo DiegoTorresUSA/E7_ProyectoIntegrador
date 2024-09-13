@@ -3,6 +3,8 @@ package org.e7.clinica.service.impl;
 import org.e7.clinica.entity.Paciente;
 import org.e7.clinica.exception.ResourceNotFoundException;
 import org.e7.clinica.service.IPacienteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.e7.clinica.repository.IPacienteRepository;
 
@@ -12,6 +14,7 @@ import java.util.Optional;
 
 @Service
 public class PacienteService implements IPacienteService {
+    private final Logger logger = LoggerFactory.getLogger(PacienteService.class);
     private IPacienteRepository pacienteRepository;
     public PacienteService(IPacienteRepository pacienteRepository) {
         this.pacienteRepository = pacienteRepository;

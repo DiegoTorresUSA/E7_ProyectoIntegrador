@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 public class OdontologoService implements IOdontologoService {
-    private final Logger logger = LoggerFactory.getLogger(TurnoService.class);
+    private final Logger logger = LoggerFactory.getLogger(OdontologoService.class);
     private IOdontologoRepository iOdontologoRepository;
 
     public OdontologoService(IOdontologoRepository iOdontologoRepository) {
