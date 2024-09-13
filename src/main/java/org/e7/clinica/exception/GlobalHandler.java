@@ -14,10 +14,10 @@ public class GlobalHandler {
     public ResponseEntity<String> manejarExcepcionesRecursoNoEncontrado(ResourceNotFoundException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
-    @ExceptionHandler(IllegalArgumentException.class)
+    /*@ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+    }*/
 
     //Excepcion para manejo de todas las otras excepciones
     @ExceptionHandler(Exception.class)
