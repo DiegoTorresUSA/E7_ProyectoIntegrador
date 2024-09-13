@@ -39,7 +39,14 @@ Este es un proyecto de backend desarrollado en Java que gestiona la información
    ```bash
    git clone https://github.com/DiegoTorresUSA/E7_ProyectoIntegrador.git
 
+2. Clonar el repositorio Front:
+
+   ```bash
+   https://github.com/DiegoTorresUSA/E7_ProyectoIntegrador_front.git
+
 ## Contribuidores
 
 Diego Torres - mando2567@gmail.com
 Alejandra Osorio - alejad.osorio@gmail.com
+
+
